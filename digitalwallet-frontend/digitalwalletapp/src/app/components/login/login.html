@@ -1,0 +1,38 @@
+<mat-card class="login-card">
+
+  <div class="left-panel">
+    <div class="branding">
+      <img src="turkcell-logo.png" height="120" alt="Logo">
+      <h2>Paranız, kontrolünüzde. Her an, her yerde.</h2>
+      <p>Dijital cüzdanınızla ödemelerinizi yönetin, bakiyenizi takip edin ve finansal işlemlerinizi güvenle gerçekleştirin.</p>
+    </div>
+  </div>
+
+  <div class="right-panel">
+    <h2>Giriş Yap</h2>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+      <p>Kullanıcı Adı</p>
+      <mat-form-field appearance="outline">
+        <input matInput formControlName="username" placeholder="Kullanıcı adınızı giriniz">
+        <mat-icon matSuffix>email</mat-icon>
+      </mat-form-field>
+
+      <p>Şifre</p>
+      <mat-form-field appearance="outline">
+        <input type="password" matInput formControlName="password" placeholder="Şifrenizi girin">
+        <mat-icon matSuffix>lock</mat-icon>
+      </mat-form-field>
+
+      <button mat-raised-button class="login-btn" type="submit">
+  Giriş Yap
+</button>
+
+     <p style="margin: 20px;text-align: center;">
+  Hesabınız yok mu?
+  <a mat-button routerLink="/register">Kayıt Olun</a>
+     </p>
+    </form>
+  </div>
+
+</mat-card>

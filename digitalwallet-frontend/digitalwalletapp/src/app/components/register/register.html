@@ -1,0 +1,53 @@
+
+
+
+<mat-card class="register-card">
+
+  <div class="left-panel">
+    <div class="branding">
+      <img src="turkcell-logo.png" height="120" alt="Logo">
+      <h2>Paranız, kontrolünüzde. Her an, her yerde.</h2>
+      <p>Dijital cüzdanınızla ödemelerinizi yönetin, bakiyenizi takip edin ve finansal işlemlerinizi güvenle gerçekleştirin.</p>
+    </div>
+  </div>
+
+  <div class="right-panel">
+    <h2>Hesap Oluştur</h2>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+        <p style="text-align: left;font-weight: bold;">Ad</p>
+            <mat-form-field>
+                <input matInput formControlName="name">
+                <mat-icon matSuffix>person</mat-icon>
+            </mat-form-field>
+
+            <p style="text-align: left;font-weight: bold;">Soyad</p>
+            <mat-form-field>
+                <input matInput formControlName="surname">
+                <mat-icon matSuffix>person</mat-icon>
+            </mat-form-field>
+
+            <p style="text-align: left;font-weight: bold;">T.C. Kimlik No</p>
+            <mat-form-field>
+                <input matInput formControlName="tckn">
+                <mat-icon matSuffix>badge</mat-icon>
+            </mat-form-field>
+      <p>Kullanıcı Adı</p>
+      <mat-form-field appearance="outline">
+        <input matInput formControlName="username" placeholder="Kullanıcı adınızı giriniz">
+        <mat-icon matSuffix>email</mat-icon>
+      </mat-form-field>
+
+      <p>Şifre</p>
+      <mat-form-field appearance="outline">
+        <input type="password" matInput formControlName="password" placeholder="Şifrenizi giriniz">
+        <mat-icon matSuffix>lock</mat-icon>
+      </mat-form-field>
+
+      <button mat-raised-button type="submit" class="login-btn">
+  Hesap oluştur
+</button>
+    </form>
+  </div>
+
+</mat-card>
