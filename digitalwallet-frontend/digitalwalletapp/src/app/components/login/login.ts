@@ -10,6 +10,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
 import { AuthService } from '../../services/AuthService';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 
 @Component({
   selector: 'app-login',
@@ -32,6 +35,7 @@ export class Login {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
+  private snackBar=inject(MatSnackBar);
 
   // Reactive form oluşturuyoruz
   loginForm = this.fb.group({
@@ -45,9 +49,17 @@ export class Login {
 
     this.authService.login(this.loginForm.value).subscribe({
       next: () => {
+        this.snackBar.open('Giriş başarılı ✔', 'Kapat', {
+        duration: 3000,
+      panelClass: ['success-snackbar']
+    });
         this.router.navigate(['/customer-home']);
       },
       error: err => {
+        this.snackBar.open('Giriş başarısız ❌', 'Kapat', {
+      duration: 3000,
+      panelClass: ['error-snackbar']
+      });
         console.log(err);
       }
     });
