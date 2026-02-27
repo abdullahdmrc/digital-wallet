@@ -32,8 +32,10 @@ public class Transaction {
     private OppositePartyType oppositePartyType;
 
     @Column(nullable = false)
-    private String oppositeParty; // bunu sor
+    private String oppositeParty;
 
     @Enumerated(EnumType.STRING)
     private Status status;
+
+
 }

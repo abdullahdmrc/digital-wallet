@@ -51,16 +51,7 @@
   font-weight: 500;
   color: #555;
 }
-.right-panel success-snackbar {
-  background-color: #4caf50;
-  font-style: italic;
-  color: white;
-}
 
-.right-panel error-snackbar {
-  background-color: #f44336;
-  color: white;
-}
 
 mat-form-field {
   display: block;

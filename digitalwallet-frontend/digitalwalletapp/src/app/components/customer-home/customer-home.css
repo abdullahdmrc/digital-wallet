@@ -1,0 +1,104 @@
+.home-container {
+  padding: 2rem;
+  background-color: #f8f9fa; 
+  min-height: 100vh;
+}
+
+.home-header {
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 1rem;
+}
+
+.home-header h1 {
+  color: #2852a8;
+  font-weight: bold;
+  margin: 0;
+}
+
+.home-header p {
+  color: #666;
+}
+
+
+.wallet-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+
+.wallet-card {
+  background: linear-gradient(135deg, #2852a8, #1c3f85);
+  color: white;
+  height: 200px;
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  border: none;
+}
+
+.wallet-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(28, 63, 133, 0.3);
+}
+
+
+.wallet-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.wallet-name {
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+}
+
+.currency-badge {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+}
+
+.balance-section .label {
+  font-size: 0.8rem;
+  opacity: 0.8;
+  margin-bottom: 4px;
+}
+
+.balance {
+  font-size: 1.8rem;
+  margin: 0;
+  font-weight: bold;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 10px;
+}
+
+.card-footer .label {
+  display: block;
+  font-size: 0.7rem;
+  opacity: 0.7;
+}
+
+
+.card-chip {
+  width: 40px;
+  height: 30px;
+  background: linear-gradient(135deg, #f0c27b, #4b1248);
+  border-radius: 4px;
+  margin-bottom: 10px;
+  opacity: 0.8;
+}

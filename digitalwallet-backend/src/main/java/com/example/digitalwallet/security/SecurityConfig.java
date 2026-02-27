@@ -12,6 +12,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -33,6 +34,7 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@EnableMethodSecurity // bu role bazlı preauthirize metodlarının calısabılmesı ıcın gereklı
 public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
@@ -56,8 +58,11 @@ public class SecurityConfig {
 
                         .requestMatchers("/api/auth/**").permitAll()
 
-                        .requestMatchers(HttpMethod.POST, "/api/transactions/approve")
+                        .requestMatchers(HttpMethod.POST, "/api/transactions/approve/**")
                         .hasRole("EMPLOYEE")
+                        .requestMatchers(HttpMethod.POST, "/api/transactions/deny/**")
+                        .hasRole("EMPLOYEE")
+
 
                         .anyRequest().authenticated()
                 )

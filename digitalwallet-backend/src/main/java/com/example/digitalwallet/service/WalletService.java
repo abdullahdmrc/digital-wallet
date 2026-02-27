@@ -40,8 +40,21 @@ public class WalletService {
     }
 
     public List<Wallet> getAllWallets(){
-        return walletRepository.getWalletByCustomer_Id(isUserLogedIn().getId());
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = (User) auth.getPrincipal();
+
+        if (currentUser.getRole() == User.Role.ROLE_EMPLOYEE) {
+
+            return walletRepository.findAll();
+        } else {
+
+            return walletRepository.getWalletByCustomer_Id(currentUser.getId());
+        }
     }
+
+
+
+
 
     public Customer isUserLogedIn(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

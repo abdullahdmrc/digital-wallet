@@ -1,0 +1,20 @@
+<h2 mat-dialog-title>Yeni Cüzdan Oluştur</h2>
+<mat-dialog-content [formGroup]="walletForm">
+  <mat-form-field appearance="outline" class="full-width" style="margin-top: 5px;">
+    <mat-label>Cüzdan Adı</mat-label>
+    <input matInput formControlName="walletName" placeholder="Örn: Kartım">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Para Birimi</mat-label>
+    <mat-select formControlName="currency">
+      <mat-option value="TRY">TRY</mat-option>
+      <mat-option value="USD">USD</mat-option>
+      <mat-option value="EUR">EUR</mat-option>
+    </mat-select>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">İptal</button>
+  <button mat-raised-button color="primary" (click)="onSave()" [disabled]="walletForm.invalid">Oluştur</button>
+</mat-dialog-actions>
