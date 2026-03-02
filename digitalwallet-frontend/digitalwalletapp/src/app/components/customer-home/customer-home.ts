@@ -38,6 +38,7 @@ export class CustomerHome implements OnInit {
     this.walletService.getWallets().subscribe({
       next: (data) => {
         this.wallets = data;
+        
         console.log("Gelen veriler:", data); // Konsoldan kontrol et
       },
       error: (err) => console.error("Hata oluştu:", err)

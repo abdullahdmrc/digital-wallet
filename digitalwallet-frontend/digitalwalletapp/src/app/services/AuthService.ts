@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs';
+import {jwtDecode} from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +29,23 @@ register(data: any) {
       })
     );
 }
+  getUserRole(): string | null {
+    const token = this.getToken();
+    if (!token) return null;
+
+    const decoded: any = jwtDecode(token);
+    return decoded.role;
+  }
+
+  isTokenExpired(): boolean {
+    const token = this.getToken();
+    if (!token) return true;
+
+    const decoded: any = jwtDecode(token);
+    const now = Date.now() / 1000;
+
+    return decoded.exp < now;
+  }
 
   logout() {
     localStorage.removeItem('token');

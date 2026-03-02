@@ -40,6 +40,7 @@ public class TransactionService {
         } else {
             transaction.setStatus(Transaction.Status.APPROVED);
             wallet.setBalance(wallet.getBalance() + request.getAmount());
+            wallet.setUsableBalance(wallet.getUsableBalance() + request.getAmount());
             walletRepository.save(wallet);
         }
 
@@ -65,9 +66,11 @@ public class TransactionService {
 
         if (request.getAmount() >= 1000) {
             transaction.setStatus(Transaction.Status.PENDING);
+            wallet.setUsableBalance(wallet.getUsableBalance() - request.getAmount());
         } else {
             transaction.setStatus(Transaction.Status.APPROVED);
             wallet.setBalance(wallet.getBalance() - request.getAmount());
+            wallet.setUsableBalance(wallet.getUsableBalance() - request.getAmount());
             walletRepository.save(wallet);
         }
 
@@ -86,6 +89,7 @@ public class TransactionService {
 
         if (transaction.getType() == Transaction.Type.DEPOSIT) {
             wallet.setBalance(wallet.getBalance() + transaction.getAmount());
+            wallet.setUsableBalance(wallet.getUsableBalance() + transaction.getAmount());
         } else if (transaction.getType() == Transaction.Type.WITHDRAW) {
             if (wallet.getBalance() < transaction.getAmount()) {
                 throw new RuntimeException("Insufficient balance for withdrawal approval");
@@ -105,6 +109,11 @@ public class TransactionService {
 
         if (transaction.getStatus() != Transaction.Status.PENDING) {
             throw new RuntimeException("Only pending transactions can be denied");
+        }
+        Wallet wallet = transaction.getWallet();
+        if (transaction.getType() == Transaction.Type.WITHDRAW) {
+            wallet.setUsableBalance(wallet.getUsableBalance() + transaction.getAmount());
+            walletRepository.save(wallet);
         }
         transaction.setStatus(Transaction.Status.DENIED);
         return transactionRepository.save(transaction);

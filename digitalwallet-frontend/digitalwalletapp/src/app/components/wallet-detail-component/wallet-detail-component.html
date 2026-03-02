@@ -1,1 +1,61 @@
-<p>wallet-detail-component works!</p>
+<div class="detail-container">
+  <aside class="left-panel">
+    <div class="wallet-card-container">
+      <div class="wallet-card">
+        <div class="card-chip"></div>
+        <div class="wallet-info">
+          <span class="wallet-name">{{ wallet?.walletName }}</span>
+          <span class="currency-badge">{{ wallet?.currency }}</span>
+        </div>
+        <div class="balance-section">
+          <p class="label">Toplam Bakiye</p>
+          <h2 class="balance">{{ wallet?.balance | number:'1.2-2' }} {{ wallet?.currency }}</h2>
+        </div>
+        <div class="card-footer">
+          <div class="usable">
+            <span class="label">Kullanılabilir Bakiye </span>
+            <span>{{ wallet?.usableBalance | number:'1.2-2' }} {{ wallet?.currency }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-buttons">
+      <button mat-raised-button color="primary" class="btn-deposit" (click)="openCreateDialog()">
+        <mat-icon>add</mat-icon> Parasal işlemler
+      </button>
+      
+    </div>
+  </aside>
+
+  <main class="right-panel">
+    <div class="transaction-header">
+      <h3>İşlem Geçmişi</h3>
+      <span class="count">{{ transactions?.length }} İşlem</span>
+    </div>
+
+    <div class="transaction-list">
+      <div *ngIf="transactions?.length === 0" class="no-data">
+        Henüz bir işlem bulunmuyor.
+      </div>
+
+      <div class="transaction-item" *ngFor="let tx of transactions">
+        <div class="tx-icon" [ngClass]="tx.type">
+          <mat-icon>{{ tx.type === 'DEPOSIT' ? 'arrow_downward' : 'arrow_upward' }}</mat-icon>
+        </div>
+        <div class="tx-details">
+          <span class="tx-party">{{ tx.oppositeParty }}</span>
+          <span class="tx-date">{{ tx.oppositePartyType }}</span>
+        </div>
+        <div class="tx-amount-status">
+          <span class="tx-amount" [class.negative]="tx.type === 'WITHDRAW'">
+            {{ tx.type === 'WITHDRAW' ? '-' : '+' }}{{ tx.amount | number:'1.2-2' }}
+          </span>
+          <span class="status-badge" [ngClass]="tx.status.toLowerCase()">
+            {{ tx.status }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

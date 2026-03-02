@@ -1,0 +1,31 @@
+<h2 mat-dialog-title>Parasal İşlemler</h2>
+<mat-dialog-content [formGroup]="transactionForm">
+  <mat-form-field appearance="outline" class="full-width" style="margin-top: 5px;">
+    <mat-label>Miktar</mat-label>
+    <input matInput formControlName="amount" placeholder="Örn: 100">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>İşlem Türü</mat-label>
+    <mat-select formControlName="type">
+      <mat-option value="DEPOSIT">Para yatır</mat-option>
+      <mat-option value="WITHDRAW">Para çek</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Karşı taraf tipi</mat-label>
+    <mat-select formControlName="oppositePartyType">
+      <mat-option value="IBAN">IBAN</mat-option>
+      <mat-option value="PAYMENT">Ödeme</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Karşı taraf</mat-label>
+    <input matInput formControlName="oppositeParty" placeholder="Örn: TR1231241412421">
+  </mat-form-field>
+  
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">İptal</button>
+  <button mat-raised-button color="primary" (click)="onSave()" [disabled]="transactionForm.invalid">Tamamla</button>
+</mat-dialog-actions>

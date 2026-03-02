@@ -23,7 +23,6 @@ export class WalletCreateDialog {
 
   onSave() {
     if (this.walletForm.valid) {
-      
       this.dialogRef.close(this.walletForm.value);
     }
   }

@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -50,6 +51,11 @@ public class WalletService {
 
             return walletRepository.getWalletByCustomer_Id(currentUser.getId());
         }
+    }
+
+    public Wallet getWalletById(int id){
+        return walletRepository.findById(id).orElseThrow(() -> new RuntimeException("Walet not found"));
+
     }
 
 

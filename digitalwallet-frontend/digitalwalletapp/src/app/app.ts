@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterLink,RouterOutlet } from '@angular/router';
 
 
@@ -12,6 +12,8 @@ import { RouterLink,RouterOutlet } from '@angular/router';
   styleUrl: './app.css'
 })
 export class App {
+
+  
   protected readonly title = signal('digitalwalletapp');
 
  

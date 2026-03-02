@@ -27,5 +27,9 @@ public class WalletController {
         return ResponseEntity.ok(walletService.getAllWallets());
     }
 
+    @GetMapping("api/wallets/{id}")
+    public ResponseEntity<Wallet> getWalletById(@PathVariable int id){
+        return ResponseEntity.ok(walletService.getWalletById(id));
+    }
 
 }

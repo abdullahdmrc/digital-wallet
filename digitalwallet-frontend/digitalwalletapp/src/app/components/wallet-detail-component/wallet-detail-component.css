@@ -1,0 +1,181 @@
+.detail-container {
+  display: flex;
+  padding: 2rem;
+  gap: 2rem;
+  background-color: #f4f7fa;
+  min-height: 100vh;
+}
+
+/* Sol Panel Stilleri */
+.left-panel {
+  flex: 1;
+  max-width: 400px;
+}
+
+/* Sol Paneldeki Kart Konteynırı ve Kart Tasarımı */
+.wallet-card {
+  background: linear-gradient(135deg, #2852a8, #1c3f85);
+  color: white;
+  height: 200px; /* Home sayfasıyla aynı yükseklik */
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  border: none;
+  position: relative;
+}
+
+/* Kredi Kartı Çipi */
+.card-chip {
+  width: 40px;
+  height: 30px;
+  background: linear-gradient(135deg, #f0c27b, #4b1248);
+  border-radius: 4px;
+  margin-bottom: 10px;
+  opacity: 0.8;
+}
+
+.wallet-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.wallet-name {
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+  font-weight: 500;
+}
+
+.currency-badge {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+}
+
+.balance-section .label {
+  font-size: 0.8rem;
+  opacity: 0.8;
+  margin-bottom: 4px;
+}
+
+.balance {
+  font-size: 1.8rem;
+  margin: 0;
+  font-weight: bold;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 10px;
+}
+
+.card-footer .label {
+  display: block;
+  font-size: 0.7rem;
+  opacity: 0.7;
+}
+
+.usable span:not(.label) {
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.action-buttons {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.action-buttons button {
+  padding: 12px;
+  font-weight: bold;
+  border-radius: 8px;
+}
+
+/* Sağ Panel Stilleri */
+.right-panel {
+  flex: 2;
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.transaction-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 1rem;
+}
+
+.transaction-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #f9f9f9;
+  transition: background 0.2s;
+}
+
+.transaction-item:hover {
+  background-color: #fcfcfc;
+}
+
+.tx-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+}
+
+.tx-icon.DEPOSIT { background: #e8f5e9; color: #4caf50; }
+.tx-icon.WITHDRAW { background: #ffebee; color: #f44336; }
+
+.tx-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.tx-party { font-weight: 600; color: #333; }
+.tx-date { font-size: 0.8rem; color: #888; }
+
+.tx-amount-status {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tx-amount { font-weight: bold; font-size: 1.1rem; }
+.tx-amount.negative { color: #f44336; }
+
+/* Statü Badge Renkleri (Case Study Kuralları) */
+.status-badge {
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.status-badge.approved { background: #e8f5e9; color: #2e7d32; }
+.status-badge.pending { background: #fff3e0; color: #ef6c00; }
+.status-badge.denied { background: #ffebee; color: #c62828; }
+
+@media (max-width: 992px) {
+  .detail-container { flex-direction: column; }
+  .left-panel { max-width: 100%; }
+}

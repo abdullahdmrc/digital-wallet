@@ -12,4 +12,5 @@ public interface WalletRepository extends JpaRepository<Wallet,Integer> {
         List<Wallet> getWalletByCustomer_Id(int customerİd);
 
 
+
 }
