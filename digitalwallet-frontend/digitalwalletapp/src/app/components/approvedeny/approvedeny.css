@@ -1,0 +1,111 @@
+.right-panel {
+  flex: 2;
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.transaction-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 1rem;
+}
+
+.buttons{
+  background: linear-gradient(135deg, #2852a8, #1c3f85);
+  color: white;
+  border-radius: 16px;
+  height: 50px;
+  width: 150px;
+  border:none;
+  font-weight: bold;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.buttons:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(28, 63, 133, 0.3);
+}
+
+.transaction-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #f9f9f9;
+  transition: background 0.2s;
+}
+
+.transaction-item:hover {
+  background-color: #fcfcfc;
+}
+
+.tx-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+}
+
+.tx-icon.DEPOSIT { background: #e8f5e9; color: #4caf50; }
+.tx-icon.WITHDRAW { background: #ffebee; color: #f44336; }
+
+.tx-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.tx-party { font-weight: 600; color: #333; }
+.tx-date { font-size: 0.8rem; color: #888; }
+
+.tx-amount-status {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tx-amount { font-weight: bold; font-size: 1.1rem; }
+.tx-amount.negative { color: #f44336; }
+
+/* Statü Badge Renkleri (Case Study Kuralları) */
+.status-badge {
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.status-badge.approved { background: #e8f5e9; color: #2e7d32; }
+.status-badge.pending { background: #fff3e0; color: #ef6c00; }
+.status-badge.denied { background: #ffebee; color: #c62828; }
+
+.status-group {
+  margin-bottom: 25px;
+}
+
+.group-title {
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.pending-title { background-color: #fff3e0; color: #ef6c00; border-left: 5px solid #ef6c00; }
+.approved-title { background-color: #e8f5e9; color: #2e7d32; border-left: 5px solid #2e7d32; }
+.denied-title { background-color: #ffebee; color: #c62828; border-left: 5px solid #c62828; }
+
+.transaction-item {
+  border-bottom: 1px solid #f0f0f0;
+  padding: 12px 0;
+}

@@ -11,98 +11,98 @@ import { DecimalPipe } from '@angular/common';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { TransactionCreation } from '../transaction-creation/transaction-creation';
-
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-wallet-detail-component',
-  imports: [MatButtonModule,MatCardModule,MatIconModule,MatInputModule,MatFormFieldModule,NgClass,DecimalPipe,CommonModule],
+  imports: [MatButtonModule, MatCardModule, MatIconModule, MatInputModule, MatFormFieldModule, NgClass, DecimalPipe, CommonModule],
   templateUrl: './wallet-detail-component.html',
   styleUrl: './wallet-detail-component.css',
 })
-export class WalletDetailComponent implements OnInit{
- private route=inject(ActivatedRoute);
- private walletService=inject(WalletService);
- dialog=inject(MatDialog)
-   id=this.route.snapshot.paramMap.get('id');
- wallet : any;
- transactions: any=[];
+export class WalletDetailComponent implements OnInit {
+  private route = inject(ActivatedRoute);
+  private walletService = inject(WalletService);
+  dialog = inject(MatDialog)
+  id = this.route.snapshot.paramMap.get('id');
+  //wallet: any;
+  //transactions: any = [];
 
- ngOnInit(): void {
-   
+  wallet$!: Observable<any>;
+  transactions$!: Observable<any[]>;
 
-   if(this.id){
-    this.getWalletDetail(this.id);
-    this.getTransactionsByWallet(this.id);
-   }
+  ngOnInit(): void {
 
- }
 
- getWalletDetail(id: String){
-  this.walletService.getWalletById(id).subscribe(data =>{
-    this.wallet=data
-  }, error =>{
-    console.log(error)
-  });
- }
+    if (this.id) {
+     this.refreshData();
+    }
 
- getTransactionsByWallet(id: String){
-  this.walletService.getTransactionsByWallet(id).subscribe(data =>{
-    this.transactions=data;
-  },error =>{
-    console.log(error);
-  })
- }
+  }
 
- deposit(data: any){
-  
-  this.walletService.deposit(data).subscribe({
-      next: () => {
-       this.getWalletDetail(this.id!); 
-      this.getTransactionsByWallet(this.id!);
-      },
-      error: (err) => console.error('Hata:', err)
+  refreshData() {
+    if (this.id) {
+      this.wallet$ = this.walletService.getWalletById(this.id);
+      this.transactions$ = this.walletService.getTransactionsByWallet(this.id);
+    }
+  }
+
+  /*getWalletDetail(id: String) {
+    this.walletService.getWalletById(id).subscribe(data => {
+      this.wallet$ = data
+    }, error => {
+      console.log(error)
+    });
+  }
+
+  getTransactionsByWallet(id: String) {
+    this.walletService.getTransactionsByWallet(id).subscribe(data => {
+      this.transactions$ = data;
+    }, error => {
+      console.log(error);
     })
- }
+  }*/
 
- withDraw(data: any){
-  this.walletService.withDraw(data).subscribe(
-    {
-      next: () =>{
-      this.getWalletDetail(this.id!); 
-      this.getTransactionsByWallet(this.id!);
-      },
-      error: (error) => console.error('Hata: ',error)
-    }
-  )
- }
+  deposit(data: any) {
+    this.walletService.deposit(data).subscribe({
+      next: () => this.refreshData(),
+      error: (err) => console.error('Hata:', err)
+    });
+  }
 
-     openCreateDialog() {
-  const dialogRef = this.dialog.open(TransactionCreation, {
-    width: '400px',
-    data: { walletId: this.id } 
-  });
+  withDraw(data: any) {
+    this.walletService.withDraw(data).subscribe({
+      next: () => this.refreshData(), 
+      error: (error) => alert("Yetersiz bakiye")
+    });
+  }
 
-  dialogRef.afterClosed().subscribe(result => {
-    if (result) {
-      // Backend'deki TransactionRequest ile birebir aynı objeyi oluşturuyoruz
-      const requestData = {
-        walletId: Number(this.id), // String'den Number'a çevirdik
-        amount: Number(result.amount), // Formdan gelen değeri sayıya çevirdik
-        type: result.type,
-        oppositePartyType: result.oppositePartyType,
-        oppositeParty: result.oppositeParty
-      };
+  openCreateDialog() {
+    const dialogRef = this.dialog.open(TransactionCreation, {
+      width: '400px',
+      data: { walletId: this.id }
+    });
 
-      console.log("Gönderilen Veri:", requestData);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // Backend'deki TransactionRequest ile birebir aynı objeyi oluşturuyoruz
+        const requestData = {
+          walletId: Number(this.id), // String'den Number'a çevirdik
+          amount: Number(result.amount), // Formdan gelen değeri sayıya çevirdik
+          type: result.type,
+          oppositePartyType: result.oppositePartyType,
+          oppositeParty: result.oppositeParty
+        };
 
-      // Karşılaştırma yaparken direkt objenin içindeki tipi kullan
-      if (requestData.type === 'WITHDRAW') {
-        this.withDraw(requestData);
-      } else {
-        this.deposit(requestData);
+        console.log("Gönderilen Veri:", requestData);
+
+        // Karşılaştırma yaparken direkt objenin içindeki tipi kullan
+        if (requestData.type === 'WITHDRAW') {
+          this.withDraw(requestData);
+        } else {
+          this.deposit(requestData);
+        }
       }
-    }
-  });
-}
- 
+    });
+  }
+
 }

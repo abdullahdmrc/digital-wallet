@@ -1,9 +1,10 @@
 <div class="home-container">
   <header class="home-header">
     <h1>Cüzdanlarım</h1>
-    <p>Hesaplarınızdaki bakiyeleri buradan yönetebilirsiniz.</p>
+    <p style="display: inline; margin-right: 950px;">Hesaplarınızdaki bakiyeleri buradan yönetebilirsiniz.</p>
+    <button class="logout-btn" (click)="logOut()" >Çıkış yap</button>
   </header>
-
+  <div *ngIf="(wallets$ | async) as wallets; else elseMessage">
   <div *ngIf="wallets?.length > 0; else elseMessage" class="wallet-grid"> <!--burda da eger wallet arrayınden gelen bir veri yoksa farklı bır ıcerık goster-->
     <mat-card class="wallet-card" *ngFor="let wallet of wallets" (click)="goDetailPage(wallet.id)"> <!--burda da fonksiyona id degerini gonderdik-->
       <div class="card-chip"></div>
@@ -25,7 +26,9 @@
         <mat-icon>chevron_right</mat-icon>
       </div>
     </mat-card>
-  </div>
+  </div> 
+  </div> 
+  
   <ng-template #elseMessage> <!--burası yukarıdakı else bloğunun calısması ıle render edılen kısım-->
     Henüz cüzdan oluşturmadınız, oluşturmak için tıklayınız. 
     <button (click)="openCreateDialog()" style="border-radius: 10px; background-color: #2852a8;color: white;font-weight: bold;height: 40px;border-style: none;">Cüzdan oluştur</button>

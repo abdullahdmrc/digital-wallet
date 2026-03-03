@@ -1,1 +1,59 @@
-<p>approvedeny works!</p>
+<main class="right-panel">
+  <div class="transaction-header">
+    <h3>İşlem Geçmişi</h3>
+    <span class="count">{{ transactions?.length }} İşlem</span>
+  </div>
+
+  <div class="transaction-list">
+    <div *ngIf="transactions?.length === 0" class="no-data">
+      Henüz bir işlem bulunmuyor.
+    </div>
+
+    <div class="status-group" *ngIf="hasStatus('PENDING')">
+      <h4 class="group-title pending-title">Onay Bekleyen İşlemler</h4>
+      <ng-container *ngFor="let tx of transactions">
+        <div class="transaction-item" *ngIf="tx.status === 'PENDING'">
+          <ng-container *ngTemplateOutlet="txTemplate; context: { $implicit: tx }"></ng-container>
+         <button style="margin-left: 50px;margin-right: 25px;" class="buttons" (click)="approve(tx.id)">Onayla</button>  <button class="buttons" (click)="deny(tx.id)">Reddet</button>
+        </div>
+      </ng-container>
+    </div>
+
+    <div class="status-group" *ngIf="hasStatus('APPROVED')">
+      <h4 class="group-title approved-title">Onaylanan İşlemler</h4>
+      <ng-container *ngFor="let tx of transactions">
+        <div class="transaction-item" *ngIf="tx.status === 'APPROVED'">
+          <ng-container *ngTemplateOutlet="txTemplate; context: { $implicit: tx }"></ng-container>
+        </div>
+      </ng-container>
+    </div>
+
+    <div class="status-group" *ngIf="hasStatus('DENIED')">
+      <h4 class="group-title denied-title">Reddedilen İşlemler</h4>
+      <ng-container *ngFor="let tx of transactions">
+        <div class="transaction-item" *ngIf="tx.status === 'DENIED'">
+          <ng-container *ngTemplateOutlet="txTemplate; context: { $implicit: tx }"></ng-container>
+        </div>
+      </ng-container>
+    </div>
+
+  </div>
+</main>
+
+<ng-template #txTemplate let-tx>
+  <div class="tx-icon" [ngClass]="tx.type">
+    <mat-icon>{{ tx.type === 'DEPOSIT' ? 'arrow_downward' : 'arrow_upward' }}</mat-icon>
+  </div>
+  <div class="tx-details">
+    <span class="tx-party">{{ tx.oppositeParty }} -- {{tx.wallet?.customer?.name}}</span>
+    <span class="tx-date">{{ tx.oppositePartyType }}</span>
+  </div>
+  <div class="tx-amount-status">
+    <span class="tx-amount" [class.negative]="tx.type === 'WITHDRAW'">
+      {{ tx.type === 'WITHDRAW' ? '-' : '+' }}{{ tx.amount | number:'1.2-2' }}
+    </span>
+    <span class="status-badge" [ngClass]="tx.status.toLowerCase()">
+      {{ tx.status }}
+    </span>
+  </div>
+</ng-template>
