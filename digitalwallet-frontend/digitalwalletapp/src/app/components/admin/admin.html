@@ -1,1 +1,43 @@
-<p>admin works!</p>
+<div>
+    <header
+        style="font-weight: bold;margin-top: 25px;margin-bottom:25px;text-align: center;background: linear-gradient(135deg, #2852a8, #1c3f85);color: white;">
+        Yönetici sayfasına hoş geldiniz.</header>
+
+    <button class="button-class" (click)="getWallets()">Cüzdanları görüntüle</button>
+    <button class="button-class" (click)="goToApproveDeny()" style="margin-right: 1000px;">İşlemleri görüntüle</button>
+    <button class="button-class" (click)="logOut()">Çıkış yap</button>
+    <hr>
+    <div class="all-cards">
+        <div *ngIf="(wallets$ | async) as wallets; else elseMessage">
+            <div *ngIf="wallets?.length > 0; else elseMessage" class="wallet-grid">
+                <!--burda da eger wallet arrayınden gelen bir veri yoksa farklı bır ıcerık goster-->
+                <mat-card class="wallet-card" *ngFor="let wallet of wallets" (click)="goDetailPage(wallet.id)">
+                    <!--burda da fonksiyona id degerini gonderdik-->
+                    <div class="card-chip"></div>
+                    <div class="wallet-info">
+                        <span class="wallet-name">{{ wallet.walletName }}</span>
+                        <span class="currency-badge">{{ wallet.currency }}</span>
+                    </div>
+
+                    <div class="balance-section">
+                        <p class="label">Toplam Bakiye</p>
+                        <h2 class="balance">{{ wallet.balance | number:'1.2-2' }} {{ wallet.currency }}</h2>
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="usable">
+                            <span class="label">Kullanılabilir</span>
+                            <span>{{ wallet.usableBalance | number:'1.2-2' }}</span>
+                        </div>
+                        <mat-icon>chevron_right</mat-icon>
+                    </div>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+
+    <ng-template #elseMessage> <!--burası yukarıdakı else bloğunun calısması ıle render edılen kısım-->
+    Kullanıcılar henüz cüzdan oluşturmadı. 
+    
+  </ng-template>
+</div>

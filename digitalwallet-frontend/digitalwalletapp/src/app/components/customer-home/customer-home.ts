@@ -10,7 +10,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDialog } from '@angular/material/dialog';
 import { WalletCreateDialog } from '../wallet-create-dialog/wallet-create-dialog';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject, switchMap } from 'rxjs';
+
 @Component({
   selector: 'app-customer-home',
   imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule, MatFormFieldModule, MatInputModule, RouterLink],
@@ -24,30 +25,22 @@ export class CustomerHome implements OnInit {
   router = inject(Router);
   dialog = inject(MatDialog)
 
-
+  private refreshTrigger = new BehaviorSubject<void>(undefined);
   wallets$!: Observable<any>;
 
   ngOnInit(): void {
-    this.wallets$ = this.walletService.getWallets();
+    this.wallets$ = this.refreshTrigger.pipe(
+      switchMap(() => this.walletService.getWallets())
+    );
   }
 
   goDetailPage(id: number) {
     this.router.navigate(['/wallet-detail-component', id]) // parametreyi root a ilettik
   }
 
-
-
   getWallets() {
-    this.walletService.getWallets().subscribe({
-      next: (data) => {
-        this.wallets$ = this.walletService.getWallets();
-
-        console.log("Gelen veriler:", data); // Konsoldan kontrol et
-      },
-      error: (err) => console.error("Hata oluştu:", err)
-    });
+    this.refreshTrigger.next();
   }
-
 
   //kullanıcı cüzdan olusturmak ıcın butona bastıgında dıalog açılcak
   openCreateDialog() {
@@ -64,7 +57,6 @@ export class CustomerHome implements OnInit {
   createWallet(data: any) {
     this.walletService.createWallet(data).subscribe({
       next: () => {
-
         this.getWallets();
       },
       error: (err) => console.error('Hata:', err)
@@ -75,7 +67,5 @@ export class CustomerHome implements OnInit {
     this.authService.logout();
     this.router.navigate(['/login']);
   }
-
-
 
 }

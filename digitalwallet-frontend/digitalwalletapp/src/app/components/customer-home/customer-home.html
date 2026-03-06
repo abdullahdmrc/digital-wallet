@@ -1,7 +1,8 @@
 <div class="home-container">
   <header class="home-header">
     <h1>Cüzdanlarım</h1>
-    <p style="display: inline; margin-right: 950px;">Hesaplarınızdaki bakiyeleri buradan yönetebilirsiniz.</p>
+    <p style="display: inline; margin-right: 800px;">Hesaplarınızdaki bakiyeleri buradan yönetebilirsiniz.</p>
+    <button (click)="openCreateDialog()" class="logout-btn">Cüzdan oluştur</button>
     <button class="logout-btn" (click)="logOut()" >Çıkış yap</button>
   </header>
   <div *ngIf="(wallets$ | async) as wallets; else elseMessage">

@@ -11,7 +11,7 @@ import { DecimalPipe } from '@angular/common';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { TransactionCreation } from '../transaction-creation/transaction-creation';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-wallet-detail-component',
@@ -24,43 +24,26 @@ export class WalletDetailComponent implements OnInit {
   private walletService = inject(WalletService);
   dialog = inject(MatDialog)
   id = this.route.snapshot.paramMap.get('id');
-  //wallet: any;
-  //transactions: any = [];
+
+  private refreshTrigger = new BehaviorSubject<void>(undefined);
 
   wallet$!: Observable<any>;
   transactions$!: Observable<any[]>;
 
   ngOnInit(): void {
-
-
     if (this.id) {
-     this.refreshData();
+      this.wallet$ = this.refreshTrigger.pipe(
+        switchMap(() => this.walletService.getWalletById(this.id))
+      );
+      this.transactions$ = this.refreshTrigger.pipe(
+        switchMap(() => this.walletService.getTransactionsByWallet(this.id))
+      );
     }
-
   }
 
   refreshData() {
-    if (this.id) {
-      this.wallet$ = this.walletService.getWalletById(this.id);
-      this.transactions$ = this.walletService.getTransactionsByWallet(this.id);
-    }
+    this.refreshTrigger.next();
   }
-
-  /*getWalletDetail(id: String) {
-    this.walletService.getWalletById(id).subscribe(data => {
-      this.wallet$ = data
-    }, error => {
-      console.log(error)
-    });
-  }
-
-  getTransactionsByWallet(id: String) {
-    this.walletService.getTransactionsByWallet(id).subscribe(data => {
-      this.transactions$ = data;
-    }, error => {
-      console.log(error);
-    })
-  }*/
 
   deposit(data: any) {
     this.walletService.deposit(data).subscribe({
@@ -71,7 +54,7 @@ export class WalletDetailComponent implements OnInit {
 
   withDraw(data: any) {
     this.walletService.withDraw(data).subscribe({
-      next: () => this.refreshData(), 
+      next: () => this.refreshData(),
       error: (error) => alert("Yetersiz bakiye")
     });
   }

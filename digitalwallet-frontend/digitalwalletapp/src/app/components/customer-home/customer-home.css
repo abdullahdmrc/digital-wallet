@@ -29,6 +29,7 @@
   border:none;
   font-weight: bold;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-left: 15px;
 } 
 
 .logout-btn:hover{

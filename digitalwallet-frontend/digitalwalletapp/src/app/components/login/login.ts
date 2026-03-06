@@ -53,7 +53,13 @@ export class Login {
         duration: 3000,
       panelClass: ['success-snackbar']
     });
+        
+      const role = this.authService.getUserRole();
+      if (role === 'ROLE_EMPLOYEE') {
+        this.router.navigate(['/admin-panel']);
+      } else if (role === 'ROLE_CUSTOMER') {
         this.router.navigate(['/customer-home']);
+      }
       },
       error: err => {
         this.snackBar.open('Giriş başarısız ❌', 'Kapat', {
