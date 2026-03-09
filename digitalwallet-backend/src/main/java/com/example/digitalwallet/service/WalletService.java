@@ -58,10 +58,6 @@ public class WalletService {
 
     }
 
-
-
-
-
     public Customer isUserLogedIn(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
