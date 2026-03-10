@@ -37,6 +37,11 @@ public class AuthController {
         return ResponseEntity.ok(token);
     }
 
+    @GetMapping("/verify")
+    public ResponseEntity<String> verifyEmail(@RequestParam String token) {
+        return ResponseEntity.ok(authService.verifyEmail(token));
+    }
+
 
 
 
