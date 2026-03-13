@@ -6,12 +6,13 @@ import com.example.digitalwallet.model.User;
 import com.example.digitalwallet.repository.CustomerRepository;
 import com.example.digitalwallet.repository.UserRepository;
 import com.example.digitalwallet.security.JwtService;
-import com.example.digitalwallet.security.SecurityConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -21,23 +22,40 @@ public class AuthService {
     private final CustomerRepository customerRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final EmailService emailService;
 
     public String register(RegisterRequest registerRequest) {
-        Customer customer=new Customer();
+        User user = registerRequest.getUser();
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole(User.Role.ROLE_CUSTOMER);
+        user.setVerified(false);
+        user.setVerificationToken(UUID.randomUUID().toString());
+        userRepository.save(user);
+
+        Customer customer = new Customer();
         customer.setName(registerRequest.getName());
         customer.setSurname(registerRequest.getSurname());
         customer.setTckn(registerRequest.getTckn());
-        customer.setUser(registerRequest.getUser());
-
-        registerRequest.getUser().setPassword(passwordEncoder.encode(registerRequest.getUser().getPassword()));
-        registerRequest.getUser().setRole(User.Role.ROLE_CUSTOMER);
-
-        userRepository.save(registerRequest.getUser());
+        customer.setUser(user);
         customerRepository.save(customer);
 
+        emailService.sendVerificationMail(user.getUsername(), user.getVerificationToken());
 
-        return jwtService.generateToken(registerRequest.getUser());
+        return "Kayıt başarılı! Lütfen e-postanızı kontrol ederek hesabınızı doğrulayın.";
     }
+
+    public String verifyEmail(String token) {
+        User user = userRepository.findByVerificationToken(token)
+                .orElseThrow(() -> new RuntimeException("Geçersiz doğrulama tokenı"));
+
+        user.setVerified(true);
+        user.setVerificationToken(null);
+        userRepository.save(user);
+
+        return "Hesabınız başarıyla doğrulandı! Artık giriş yapabilirsiniz.";
+    }
+
 
     public String login(String username, String password,
                         AuthenticationManager authenticationManager) {
@@ -45,9 +63,13 @@ public class AuthService {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(username, password)
         );
-
         User user = userRepository.findByUsername(username)
                 .orElseThrow();
+
+        if (!user.isVerified()) {
+            throw new RuntimeException("Lütfen önce e-posta adresinizi doğrulayın.");
+        }
+
 
         return jwtService.generateToken(user);
     }

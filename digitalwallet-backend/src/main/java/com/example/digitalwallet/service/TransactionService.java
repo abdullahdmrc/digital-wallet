@@ -82,9 +82,6 @@ public class TransactionService {
         Transaction transaction = transactionRepository.findById(transactionId)
                 .orElseThrow(() -> new RuntimeException("Transaction not found"));
 
-        if (transaction.getStatus() != Transaction.Status.PENDING) {
-            throw new RuntimeException("Only pending transactions can be approved");
-        }
         Wallet wallet = transaction.getWallet();
 
         if (transaction.getType() == Transaction.Type.DEPOSIT) {
@@ -107,9 +104,6 @@ public class TransactionService {
         Transaction transaction = transactionRepository.findById(transactionId)
                 .orElseThrow(() -> new RuntimeException("Transaction not found"));
 
-        if (transaction.getStatus() != Transaction.Status.PENDING) {
-            throw new RuntimeException("Only pending transactions can be denied");
-        }
         Wallet wallet = transaction.getWallet();
         if (transaction.getType() == Transaction.Type.WITHDRAW) {
             wallet.setUsableBalance(wallet.getUsableBalance() + transaction.getAmount());
