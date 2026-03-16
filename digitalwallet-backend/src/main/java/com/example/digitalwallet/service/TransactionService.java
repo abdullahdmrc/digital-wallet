@@ -1,6 +1,7 @@
 package com.example.digitalwallet.service;
 
 import com.example.digitalwallet.dto.TransactionRequest;
+import com.example.digitalwallet.model.Customer;
 import com.example.digitalwallet.model.Transaction;
 import com.example.digitalwallet.model.User;
 import com.example.digitalwallet.model.Wallet;
@@ -8,6 +9,8 @@ import com.example.digitalwallet.repository.TransactionRepository;
 import com.example.digitalwallet.repository.WalletRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -23,6 +26,7 @@ public class TransactionService {
 
     private final TransactionRepository transactionRepository;
     private final WalletRepository walletRepository;
+    private final JavaMailSender mailSender;
 
     public Transaction deposit(TransactionRequest request) {
         Wallet wallet = walletRepository.findById(request.getWalletId())
@@ -83,6 +87,8 @@ public class TransactionService {
                 .orElseThrow(() -> new RuntimeException("Transaction not found"));
 
         Wallet wallet = transaction.getWallet();
+        User user=wallet.getCustomer().getUser();
+
 
         if (transaction.getType() == Transaction.Type.DEPOSIT) {
             wallet.setBalance(wallet.getBalance() + transaction.getAmount());
@@ -96,6 +102,13 @@ public class TransactionService {
 
         transaction.setStatus(Transaction.Status.APPROVED);
         walletRepository.save(wallet);
+
+        SimpleMailMessage mailMessage=new SimpleMailMessage();
+        mailMessage.setFrom("projectdigitalwallet@gmail.com");
+        mailMessage.setTo(user.getUsername());
+        mailMessage.setSubject(" İşleminiz hakkında");
+        mailMessage.setText(transaction.getId()+" numaralı işleminiz onaylanmıştır ve cüzdan bakiyeniz güncellenmiştir.");
+        mailSender.send(mailMessage);
         return transactionRepository.save(transaction);
     }
 
@@ -105,11 +118,20 @@ public class TransactionService {
                 .orElseThrow(() -> new RuntimeException("Transaction not found"));
 
         Wallet wallet = transaction.getWallet();
+        User user=wallet.getCustomer().getUser();
+
         if (transaction.getType() == Transaction.Type.WITHDRAW) {
             wallet.setUsableBalance(wallet.getUsableBalance() + transaction.getAmount());
             walletRepository.save(wallet);
         }
         transaction.setStatus(Transaction.Status.DENIED);
+
+        SimpleMailMessage mailMessage=new SimpleMailMessage();
+        mailMessage.setFrom("projectdigitalwallet@gmail.com");
+        mailMessage.setTo(user.getUsername());
+        mailMessage.setSubject(" İşleminiz hakkında ");
+        mailMessage.setText(transaction.getId()+ " numaralı işleminiz reddeilmiştir , cüzdan bakiyeniz değişmemiştir.");
+        mailSender.send(mailMessage);
         return transactionRepository.save(transaction);
     }
 

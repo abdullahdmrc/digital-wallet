@@ -25,6 +25,7 @@ public class AuthService {
     private final EmailService emailService;
 
     public String register(RegisterRequest registerRequest) {
+
         User user = registerRequest.getUser();
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -41,6 +42,8 @@ public class AuthService {
         customerRepository.save(customer);
 
         emailService.sendVerificationMail(user.getUsername(), user.getVerificationToken());
+
+
 
         return "Kayıt başarılı! Lütfen e-postanızı kontrol ederek hesabınızı doğrulayın.";
     }
