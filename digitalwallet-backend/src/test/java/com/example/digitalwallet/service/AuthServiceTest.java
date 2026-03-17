@@ -19,8 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
@@ -47,8 +46,13 @@ public class AuthServiceTest {
     @Mock
     private AuthenticationManager authenticationManager;
 
+    @Mock
+    private EmailService emailService;
+
     @InjectMocks
     private AuthService authService;
+
+
 
 
     @Test
@@ -65,26 +69,26 @@ public class AuthServiceTest {
         request.setUser(user);
 
         String encodedPassword = "encoded_sifre_999";
-        String fakeToken = "eyJhbGciOiJIUzI1NiJ9.fake_token";
+
 
         // Mockito stubs -> metotlar çağrıldığında ne döneceklerini belirliyoruz
         when(passwordEncoder.encode(anyString())).thenReturn(encodedPassword);
-        when(jwtService.generateToken(any(User.class))).thenReturn(fakeToken);
-
         // 2. Act: gerçek metodu çağırıyoruz
         String result = authService.register(request);
 
         // 3. Assert: sonuçları karşılaştırıyoruz
         assertNotNull(result);
-        assertEquals(fakeToken, result);
+        assertEquals("Kayıt başarılı! Lütfen e-postanızı kontrol ederek hesabınızı doğrulayın.", result);
         assertEquals(encodedPassword, user.getPassword()); // Şifrenin encode edildiğini kontrol ediyoruz
         assertEquals(User.Role.ROLE_CUSTOMER, user.getRole()); // Rolün doğru set edildiğini kontrol ediyoruz
+        assertFalse(user.isVerified());
+        assertNotNull(user.getVerificationToken());
 
         // 4. Verify: Bağımlılıkların (repository vb.) doğru şekilde çağrıldığından emin oluyoruz
         verify(passwordEncoder, times(1)).encode(anyString());
         verify(userRepository, times(1)).save(any(User.class));
         verify(customerRepository, times(1)).save(any(Customer.class));
-        verify(jwtService, times(1)).generateToken(any(User.class));
+        verify(emailService, times(1)).sendVerificationMail(eq(user.getUsername()), anyString());
     }
 
     @Test
@@ -97,14 +101,8 @@ public class AuthServiceTest {
         User user = new User();
         user.setUsername(username);
         user.setPassword("encoded_password");
+        user.setVerified(true);
 
-        // AuthenticationManager ı mockladık
-        AuthenticationManager authenticationManager = mock(AuthenticationManager.class);
-        Authentication authentication = mock(Authentication.class);
-
-        // Mock davranışlarını tanımladık hata olmadıgını varsaydık
-        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
-                .thenReturn(authentication);
         when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
         when(jwtService.generateToken(user)).thenReturn(fakeToken);
 
@@ -118,7 +116,52 @@ public class AuthServiceTest {
         // 4. Verify: İşlemlerin doğru sırayla yapıldığını denetledik
         verify(authenticationManager, times(1)).authenticate(any(UsernamePasswordAuthenticationToken.class));
         verify(userRepository, times(1)).findByUsername(username);
+        verify(authenticationManager).authenticate(any(UsernamePasswordAuthenticationToken.class));
         verify(jwtService, times(1)).generateToken(user);
+    }
+
+    @Test
+    public void loginShouldFailWhenEmailNotVerifiedTest(){
+
+        String username = "abdullah_user";
+        String password = "correct_password";
+
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword("encoded_password");
+        user.setVerified(false);
+
+        when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
+
+
+        RuntimeException runtimeException=assertThrows(RuntimeException.class,() -> authService.login(username,password,authenticationManager));
+        assertEquals("Lütfen önce e-posta adresinizi doğrulayın.",runtimeException.getMessage());
+
+
+        verify(authenticationManager, times(1)).authenticate(any(UsernamePasswordAuthenticationToken.class));
+        verify(userRepository, times(1)).findByUsername(username);
+        verify(jwtService, never()).generateToken(user);
+    }
+
+    @Test
+    public void successfullyVerifyEmail(){
+        String verificationToken="xyzvacasdweasd";
+        User user =new User();
+        user.setVerified(false);
+        user.setVerificationToken(verificationToken);
+
+        when(userRepository.findByVerificationToken(verificationToken)).thenReturn(Optional.of(user));
+
+        String result=authService.verifyEmail(verificationToken);
+
+        assertNotNull(result);
+        assertEquals("Hesabınız başarıyla doğrulandı! Artık giriş yapabilirsiniz.",result);
+        assertTrue(user.isVerified());
+        assertNull(user.getVerificationToken());
+
+        verify(userRepository,times(1)).findByVerificationToken(verificationToken);
+        verify(userRepository,times(1)).save(user);
+
     }
 
 
