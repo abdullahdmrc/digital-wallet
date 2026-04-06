@@ -1,0 +1,16 @@
+apiVersion: skaffold/v4beta7
+kind: Config
+metadata:
+  name: digital-wallet
+build:
+  artifacts:
+  - image: wallet-backend-image
+    context: digitalwallet-backend
+  - image: wallet-frontend-image
+    context: digitalwallet-frontend
+manifests:
+  rawYaml:
+  - deploy/backend-manifest.yaml
+  - deploy/frontend-manifest.yaml
+deploy:
+  kubectl: {}

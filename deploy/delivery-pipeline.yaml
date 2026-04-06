@@ -1,0 +1,11 @@
+apiVersion: deploy.cloud.google.com/v1
+kind: DeliveryPipeline
+metadata:
+  name: wallet-pipeline
+description: Dijital Cüzdan GKE Dağıtım Boru Hattı
+serialPipeline:
+  stages:
+  - targetId: cd-staging
+    profiles: [staging]
+  - targetId: cd-production
+    profiles: [prod]
