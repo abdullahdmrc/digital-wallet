@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: wallet-frontend-image # Skaffold bunu otomatik dolduracak
+        image: digital-wallet-ui # Skaffold bunu otomatik dolduracak
         ports:
         - containerPort: 80 # Nginx portu
 ---

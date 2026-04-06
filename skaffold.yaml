@@ -4,10 +4,12 @@ metadata:
   name: digital-wallet
 build:
   artifacts:
-  - image: wallet-backend-image
+  # 1. Backend İmajı
+  - image: digital-wallet-api
     context: digitalwallet-backend
-  - image: wallet-frontend-image
-    context: digitalwallet-frontend
+  # 2. Frontend İmajı (Klasör yolu compose dosyandaki gibi güncellendi)
+  - image: digital-wallet-ui
+    context: digitalwallet-frontend/digitalwalletapp
 manifests:
   rawYaml:
   - deploy/backend-manifest.yaml
