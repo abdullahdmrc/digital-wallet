@@ -14,16 +14,16 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: digital-wallet-ui # Skaffold bunu otomatik dolduracak
+        image: digital-wallet-ui
         ports:
-        - containerPort: 80 # Nginx portu
+        - containerPort: 80
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: wallet-frontend-svc
 spec:
-  type: LoadBalancer # Dışarıdan erişim için
+  type: LoadBalancer
   selector:
     app: wallet-frontend
   ports:
