@@ -16,8 +16,10 @@ RUN npm run build -- --configuration=production
 #2. Aşama: Runtime
 FROM nginx:alpine
 
-COPY --from=build /app/dist/digitalwalletapp/browser /usr/share/nginx/html
+# Nginx SPA (Single Page Application) ayarını kopyalıyoruz
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
+COPY --from=build /app/dist/digitalwalletapp/browser /usr/share/nginx/html
 
 EXPOSE 80
 

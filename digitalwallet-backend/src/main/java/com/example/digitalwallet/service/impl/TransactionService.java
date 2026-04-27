@@ -1,24 +1,20 @@
-package com.example.digitalwallet.service;
+package com.example.digitalwallet.service.impl;
 
 import com.example.digitalwallet.dto.TransactionRequest;
-import com.example.digitalwallet.model.Customer;
 import com.example.digitalwallet.model.Transaction;
 import com.example.digitalwallet.model.User;
 import com.example.digitalwallet.model.Wallet;
 import com.example.digitalwallet.repository.TransactionRepository;
 import com.example.digitalwallet.repository.WalletRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

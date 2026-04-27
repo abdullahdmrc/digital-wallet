@@ -1,6 +1,7 @@
 package com.example.digitalwallet.service;
 
 
+import com.example.digitalwallet.service.impl.EmailService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
