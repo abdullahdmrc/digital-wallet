@@ -7,6 +7,8 @@ import com.example.digitalwallet.model.User;
 import com.example.digitalwallet.repository.CustomerRepository;
 import com.example.digitalwallet.repository.UserRepository;
 import com.example.digitalwallet.security.JwtService;
+import com.example.digitalwallet.service.impl.AuthService;
+import com.example.digitalwallet.service.impl.EmailService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,7 +16,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;

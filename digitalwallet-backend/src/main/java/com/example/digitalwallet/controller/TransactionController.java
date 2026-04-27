@@ -3,7 +3,7 @@ package com.example.digitalwallet.controller;
 
 import com.example.digitalwallet.dto.TransactionRequest;
 import com.example.digitalwallet.model.Transaction;
-import com.example.digitalwallet.service.TransactionService;
+import com.example.digitalwallet.service.impl.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

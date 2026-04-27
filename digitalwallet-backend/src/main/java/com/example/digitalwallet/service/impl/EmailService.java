@@ -1,4 +1,4 @@
-package com.example.digitalwallet.service;
+package com.example.digitalwallet.service.impl;
 
 
 import lombok.RequiredArgsConstructor;

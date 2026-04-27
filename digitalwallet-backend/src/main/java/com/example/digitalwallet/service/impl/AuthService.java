@@ -1,4 +1,4 @@
-package com.example.digitalwallet.service;
+package com.example.digitalwallet.service.impl;
 
 import com.example.digitalwallet.dto.RegisterRequest;
 import com.example.digitalwallet.model.Customer;

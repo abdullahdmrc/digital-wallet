@@ -7,6 +7,7 @@ import com.example.digitalwallet.model.User;
 import com.example.digitalwallet.model.Wallet;
 import com.example.digitalwallet.repository.TransactionRepository;
 import com.example.digitalwallet.repository.WalletRepository;
+import com.example.digitalwallet.service.impl.TransactionService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -16,7 +17,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import java.lang.reflect.Executable;
 import java.util.List;
 import java.util.Optional;
 
