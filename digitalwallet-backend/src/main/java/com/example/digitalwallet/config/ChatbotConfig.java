@@ -28,7 +28,7 @@ public class ChatbotConfig {
     public ChatLanguageModel ollamaChatModel() {
         return OllamaChatModel.builder()
                 .baseUrl("http://localhost:11434")
-                .modelName("phi3")
+                .modelName("llama3.1")
                 .temperature(0.0)
                 .timeout(Duration.ofSeconds(60))
                 .build();
@@ -71,7 +71,7 @@ public class ChatbotConfig {
                 .chatLanguageModel(chatLanguageModel)
                 .contentRetriever(contentRetriever)
                 .chatMemoryProvider(memoryId -> MessageWindowChatMemory.withMaxMessages(10))
-                .tools(walletTools)
+                .tools(walletTools) // wallet tools class used here for general purpose
                 .build();
     }
 }

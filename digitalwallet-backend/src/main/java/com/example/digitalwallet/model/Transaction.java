@@ -2,6 +2,8 @@ package com.example.digitalwallet.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import java.time.Instant;
+import java.util.Date;
 
 
 @Entity
@@ -12,6 +14,7 @@ public class Transaction {
     public enum Type { DEPOSIT, WITHDRAW }
     public enum OppositePartyType { IBAN, PAYMENT }
     public enum Status { PENDING, APPROVED, DENIED }
+    public enum SpendingCategory {FOOD,SHOPPING,FUEL,CINEMA,TRAVEL,OTHER}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,6 +39,15 @@ public class Transaction {
 
     @Enumerated(EnumType.STRING)
     private Status status;
+
+    @Column(nullable = false)
+    private Date date = Date.from(Instant.now());
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private SpendingCategory spendingCategory;
+
+
 
 
 }

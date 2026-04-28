@@ -24,6 +24,7 @@ public class TransactionService {
     private final WalletRepository walletRepository;
     private final JavaMailSender mailSender;
 
+    @Transactional
     public Transaction deposit(TransactionRequest request) {
         Wallet wallet = walletRepository.findById(request.getWalletId())
                 .orElseThrow(() -> new RuntimeException("Wallet not found"));
@@ -34,6 +35,10 @@ public class TransactionService {
         transaction.setType(Transaction.Type.DEPOSIT);
         transaction.setOppositeParty(request.getOppositeParty());
         transaction.setOppositePartyType(request.getOppositePartyType());
+        if (request.getSpendingCategory() == null) {
+            throw new IllegalArgumentException("Spending category cannot be null");
+        }
+        transaction.setSpendingCategory(request.getSpendingCategory());
 
         if (request.getAmount() >= 1000) {
             transaction.setStatus(Transaction.Status.PENDING);
@@ -47,7 +52,7 @@ public class TransactionService {
         return transactionRepository.save(transaction);
     }
 
-
+    @Transactional
     public Transaction withdraw(TransactionRequest request) {
         Wallet wallet = walletRepository.findById(request.getWalletId())
                 .orElseThrow(() -> new RuntimeException("Wallet not found"));
@@ -63,6 +68,10 @@ public class TransactionService {
         transaction.setType(Transaction.Type.WITHDRAW);
         transaction.setOppositeParty(request.getOppositeParty());
         transaction.setOppositePartyType(request.getOppositePartyType());
+        if (request.getSpendingCategory() == null) {
+            throw new IllegalArgumentException("Spending category cannot be null");
+        }
+        transaction.setSpendingCategory(request.getSpendingCategory());
 
         if (request.getAmount() >= 1000) {
             transaction.setStatus(Transaction.Status.PENDING);

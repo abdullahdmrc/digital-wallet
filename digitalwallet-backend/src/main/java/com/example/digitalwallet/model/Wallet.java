@@ -13,7 +13,6 @@ public class Wallet {
     public enum Currency {
         TRY, USD, EUR
     }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
