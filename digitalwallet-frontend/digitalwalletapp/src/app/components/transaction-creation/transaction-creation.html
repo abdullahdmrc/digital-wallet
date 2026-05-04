@@ -23,6 +23,17 @@
     <mat-label>Karşı taraf</mat-label>
     <input matInput formControlName="oppositeParty" placeholder="Örn: TR1231241412421">
   </mat-form-field>
+  <mat-form-field appearance="outline" class="full-width">
+  <mat-label>Harcama Kategorisi</mat-label>
+  <mat-select formControlName="spendingCategory">
+    <mat-option value="FOOD">Yemek</mat-option>
+    <mat-option value="SHOPPING">Alışveriş</mat-option>
+    <mat-option value="FUEL">Akaryakıt</mat-option>
+    <mat-option value="CINEMA">Sinema</mat-option>
+    <mat-option value="TRAVEL">Seyahat</mat-option>
+    <mat-option value="OTHER">Diğer</mat-option>
+  </mat-select>
+</mat-form-field>
   
 </mat-dialog-content>
 <mat-dialog-actions align="end">

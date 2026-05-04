@@ -144,11 +144,6 @@ public class WalletTools {
 
 
 
-
-
-
-
-
     public int getCurrentUserId(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();

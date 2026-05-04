@@ -73,7 +73,8 @@ export class WalletDetailComponent implements OnInit {
           amount: Number(result.amount), // Formdan gelen değeri sayıya çevirdik
           type: result.type,
           oppositePartyType: result.oppositePartyType,
-          oppositeParty: result.oppositeParty
+          oppositeParty: result.oppositeParty,
+          spendingCategory: result.spendingCategory
         };
 
         console.log("Gönderilen Veri:", requestData);

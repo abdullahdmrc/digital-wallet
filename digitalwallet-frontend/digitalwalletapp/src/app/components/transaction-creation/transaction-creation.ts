@@ -25,7 +25,8 @@ export class TransactionCreation {
   amount: ['', [Validators.required, Validators.min(0.1)]],
   type: ['', Validators.required], 
   oppositePartyType: ['', Validators.required],
-  oppositeParty: ['', Validators.required]
+  oppositeParty: ['', Validators.required],
+  spendingCategory: ['', Validators.required]
 });
 
   onSave() {
