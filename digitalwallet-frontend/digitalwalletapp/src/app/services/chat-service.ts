@@ -1,20 +1,22 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs'; 
 
 @Injectable({
   providedIn: 'root',
 })
 export class ChatService {
   
-  getResponse(userMessage: string): string {
-    // Basit bir yanıt döndüren örnek bir chatbot mantığı
-    if (userMessage.toLowerCase().includes('merhaba')) {  
-      return 'Merhaba! Size nasıl yardımcı olabilirim?';
-    } else if (userMessage.toLowerCase().includes('nasılsın')) {
-      return 'İyiyim, teşekkür ederim! Siz nasılsınız?';
-    } else if (userMessage.toLowerCase().includes('teşekkür')) {
-      return 'Rica ederim! Başka bir sorunuz var mı?';
-    } else {
-      return 'Üzgünüm, bu konuda size yardımcı olamıyorum. Lütfen başka bir şey sorun.';
-    } 
+  private chatApiUrl = 'http://localhost:8081/api/chat';
+  private http = inject(HttpClient);
+
+  getResponse(userMessage: string): Observable<string> {
+    
+    
+    const requestBody = { message: userMessage };
+
+    return this.http.post(this.chatApiUrl, requestBody, {
+      responseType: 'text' 
+    });
   }
 }

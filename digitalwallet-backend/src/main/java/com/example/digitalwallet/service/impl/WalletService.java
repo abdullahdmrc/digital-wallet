@@ -26,14 +26,11 @@ public class WalletService {
         Wallet newWallet=new Wallet();
         newWallet.setWalletName(walletRequest.getWalletName());
         newWallet.setCurrency(Wallet.Currency.valueOf(walletRequest.getCurrency()));
-
-
         newWallet.setCustomer(isUserLogedIn());
         newWallet.setActiveForShopping(true);// default
         newWallet.setActiveForWithdraw(true); // default
         newWallet.setBalance(0.0);//default
         newWallet.setUsableBalance(0.0);//default
-
         walletRepository.save(newWallet);
         return newWallet;
 
