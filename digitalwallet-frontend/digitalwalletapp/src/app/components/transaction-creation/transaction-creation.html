@@ -10,9 +10,10 @@
     <mat-select formControlName="type">
       <mat-option value="DEPOSIT">Para yatır</mat-option>
       <mat-option value="WITHDRAW">Para çek</mat-option>
+      <mat-option value="TRANSFER">IBAN ile Para Gönder</mat-option>
     </mat-select>
   </mat-form-field>
-  <mat-form-field appearance="outline" class="full-width">
+  <mat-form-field appearance="outline" class="full-width" *ngIf="transactionForm.get('type')?.value !== 'TRANSFER'">
     <mat-label>Karşı taraf tipi</mat-label>
     <mat-select formControlName="oppositePartyType">
       <mat-option value="IBAN">IBAN</mat-option>
@@ -20,10 +21,11 @@
     </mat-select>
   </mat-form-field>
   <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Karşı taraf</mat-label>
+    <mat-label *ngIf="transactionForm.get('type')?.value !== 'TRANSFER'">Karşı taraf</mat-label>
+    <mat-label *ngIf="transactionForm.get('type')?.value === 'TRANSFER'">Alıcı IBAN</mat-label>
     <input matInput formControlName="oppositeParty" placeholder="Örn: TR1231241412421">
   </mat-form-field>
-  <mat-form-field appearance="outline" class="full-width">
+  <mat-form-field appearance="outline" class="full-width" *ngIf="transactionForm.get('type')?.value !== 'TRANSFER'">
   <mat-label>Harcama Kategorisi</mat-label>
   <mat-select formControlName="spendingCategory">
     <mat-option value="FOOD">Yemek</mat-option>

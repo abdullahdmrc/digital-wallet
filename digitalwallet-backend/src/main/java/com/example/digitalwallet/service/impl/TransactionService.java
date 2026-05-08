@@ -161,6 +161,61 @@ public class TransactionService {
         return transactionRepository.findTransactionsByWallet_Id(id);
     }
 
+    public Transaction getTransactionById(int id) {
+        return transactionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Transaction not found"));
+    }
 
+    @Transactional
+    public Transaction transferViaIban(com.example.digitalwallet.dto.TransferRequest request) {
+        Wallet senderWallet = walletRepository.findById(request.getSenderWalletId())
+                .orElseThrow(() -> new RuntimeException("Sender wallet not found"));
 
+        if (senderWallet.isBlocked() || !senderWallet.isActiveForWithdraw()) {
+            throw new RuntimeException("Sender wallet is blocked or not active for withdrawal");
+        }
+
+        if (senderWallet.getUsableBalance() < request.getAmount()) {
+            throw new RuntimeException("Insufficient balance");
+        }
+
+        Wallet targetWallet = walletRepository.findByIban(request.getTargetIban())
+                .orElseThrow(() -> new RuntimeException("Target IBAN not found"));
+
+        if (targetWallet.isBlocked()) {
+            throw new RuntimeException("Target wallet is blocked");
+        }
+
+        // Create withdrawal transaction for sender
+        Transaction senderTx = new Transaction();
+        senderTx.setWallet(senderWallet);
+        senderTx.setAmount(request.getAmount());
+        senderTx.setType(Transaction.Type.WITHDRAW);
+        senderTx.setOppositePartyType(Transaction.OppositePartyType.IBAN);
+        senderTx.setOppositeParty(request.getTargetIban());
+        senderTx.setSpendingCategory(Transaction.SpendingCategory.OTHER);
+        senderTx.setStatus(Transaction.Status.APPROVED);
+
+        senderWallet.setBalance(senderWallet.getBalance() - request.getAmount());
+        senderWallet.setUsableBalance(senderWallet.getUsableBalance() - request.getAmount());
+
+        // Create deposit transaction for receiver
+        Transaction receiverTx = new Transaction();
+        receiverTx.setWallet(targetWallet);
+        receiverTx.setAmount(request.getAmount());
+        receiverTx.setType(Transaction.Type.DEPOSIT);
+        receiverTx.setOppositePartyType(Transaction.OppositePartyType.IBAN);
+        receiverTx.setOppositeParty(senderWallet.getIban() != null ? senderWallet.getIban() : "Bilinmeyen Cüzdan");
+        receiverTx.setSpendingCategory(Transaction.SpendingCategory.OTHER);
+        receiverTx.setStatus(Transaction.Status.APPROVED);
+
+        targetWallet.setBalance(targetWallet.getBalance() + request.getAmount());
+        targetWallet.setUsableBalance(targetWallet.getUsableBalance() + request.getAmount());
+
+        walletRepository.save(senderWallet);
+        walletRepository.save(targetWallet);
+        transactionRepository.save(receiverTx);
+
+        return transactionRepository.save(senderTx);
+    }
 }

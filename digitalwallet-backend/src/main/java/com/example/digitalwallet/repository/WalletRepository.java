@@ -10,7 +10,6 @@ import java.util.Optional;
 @Repository
 public interface WalletRepository extends JpaRepository<Wallet,Integer> {
         List<Wallet> getWalletByCustomer_Id(int customerİd);
-
-
+        Optional<Wallet> findByIban(String iban);
 
 }

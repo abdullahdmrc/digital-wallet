@@ -225,6 +225,58 @@
   /* Yasak ikonu gösterir */
 }
 
+/* Markdown'dan dönen tablolara stil veriyoruz */
+::ng-deep .message table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 0.85rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  border-radius: 8px;
+  overflow: hidden; /* Köşelerin yuvarlak kalması için */
+}
 
+::ng-deep .message th {
+  background-color: #f1f5f9; /* Açık gri/mavi başlık rengi */
+  color: #334155;
+  text-align: left;
+  padding: 10px;
+  font-weight: 600;
+  border-bottom: 2px solid #cbd5e1;
+}
 
+::ng-deep .message td {
+  padding: 10px;
+  border-bottom: 1px solid #e2e8f0;
+  color: #475569;
+}
 
+::ng-deep .message tr:last-child td {
+  border-bottom: none;
+}
+
+/* Satırların üzerine gelince hafif renk değişimi */
+::ng-deep .message tr:hover {
+  background-color: #f8fafc;
+}
+
+/* Genel Markdown stilleri */
+::ng-deep .message strong {
+  font-weight: 700;
+  color: #1e293b;
+}
+
+::ng-deep .user-message strong {
+  color: #ffffff;
+}
+
+::ng-deep .message ul, ::ng-deep .message ol {
+  padding-left: 20px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+::ng-deep .message li {
+  margin-bottom: 4px;
+}

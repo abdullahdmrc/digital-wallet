@@ -1,7 +1,7 @@
 <div class="chatbot-container">
     <button class="chatbot-button" (click)="toggleChat()" *ngIf="!isOpen">
-        <img src="/teknocan_arrow.png" alt="Chatbot Teknocan" class="chatbot-icon"/>
-    </button> 
+        <img src="/teknocan_arrow.png" alt="Chatbot Teknocan" class="chatbot-icon" />
+    </button>
 
     <div class="chatbot-panel" *ngIf="isOpen">
         <div class="chatbot-header" (click)="toggleChat()">
@@ -14,9 +14,10 @@
 
         <div class="chatbot-body" #scrollMe>
             <div class="messages">
-                <div *ngFor="let msg of messages" class="message" 
-                [ngClass]="{'user-message': msg.sender === 'user', 'bot-message': msg.sender === 'bot'}">
-                {{msg.text}}
+                <div *ngFor="let msg of messages" class="message"
+                    [ngClass]="{'user-message': msg.sender === 'user', 'bot-message': msg.sender === 'bot'}"
+                    >
+                    {{ msg.text }}
                 </div>
 
                 <div class="message bot-message typing-indicator" *ngIf="isTyping">
@@ -26,12 +27,8 @@
         </div>
 
         <form class="chatbot-footer" (submit)="sendMessage($event)">
-            <input type="text"
-            [(ngModel)]="userInput"
-            name="message"
-            placeholder="Mesajınızı yazın..."
-            autocomplete="off"
-            required/>
+            <input type="text" [(ngModel)]="userInput" name="message" placeholder="Mesajınızı yazın..."
+                autocomplete="off" required />
 
             <button type="submit" [disabled]="!userInput.trim() || isTyping">Gönder</button>
         </form>

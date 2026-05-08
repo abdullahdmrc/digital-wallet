@@ -129,15 +129,13 @@ public class WalletTools {
 
         StringBuilder sb = new StringBuilder();
         sb.append(months[targetMonth]).append(" Ayı Hesap Özeti:\n\n");
-        sb.append("| Harcama Kategorisi | Toplam Tutar |\n");
-        sb.append("|---|---|\n");
 
         for (Map.Entry<Transaction.SpendingCategory, Double> entry : categoryTotals.entrySet()) {
-            sb.append(String.format("| %s | %.2f TL |\n", entry.getKey(), entry.getValue()));
+            sb.append("- ").append(entry.getKey()).append(" : ").append(String.format("%.2f", entry.getValue())).append(" TL\n");
         }
 
-        sb.append(String.format("\n**Aylık Genel Toplam:** %.2f TL\n", grandTotal));
-        sb.append(String.format("*(Bu ay toplam %d adet işlem yaptınız)*", monthlyWithdrawals.size()));
+        sb.append(String.format("\nAylık Genel Toplam: %.2f TL\n", grandTotal));
+        sb.append(String.format("(Bu ay toplam %d adet işlem yaptınız)", monthlyWithdrawals.size()));
 
         return sb.toString();
     }

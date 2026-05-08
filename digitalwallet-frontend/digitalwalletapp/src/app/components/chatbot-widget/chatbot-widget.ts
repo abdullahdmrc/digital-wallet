@@ -2,6 +2,7 @@ import { Component, inject, ViewChild, ElementRef, AfterViewChecked } from '@ang
 import { ChatService } from '../../services/chat-service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { marked } from 'marked';
 
 interface Message {
   sender: 'user' | 'bot';
@@ -83,4 +84,9 @@ export class ChatbotWidget implements AfterViewChecked {
       console.error('Scroll error: ', error);
     }
   }
+
+  //kullanıcı mesajlarında markdown desteği için
+  /*parseMarkdown(text: string): string {
+    return marked.parse(text) as string; 
+  }*/
 }

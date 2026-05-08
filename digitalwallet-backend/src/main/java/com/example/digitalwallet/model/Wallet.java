@@ -30,6 +30,10 @@ public class Wallet {
     private boolean activeForShopping;
     private boolean activeForWithdraw;
 
+    @Column(unique = true)
+    private String iban;
+
+    private boolean isBlocked = false;
 
     private double balance;
     private double usableBalance;

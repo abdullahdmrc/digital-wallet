@@ -3,6 +3,7 @@ package com.example.digitalwallet.config;
 import com.example.digitalwallet.service.ChatAssistant;
 import com.example.digitalwallet.service.WalletTools;
 import dev.langchain4j.data.document.Document;
+import dev.langchain4j.data.document.loader.FileSystemDocumentLoader;
 import dev.langchain4j.data.document.splitter.DocumentSplitters;
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
@@ -19,6 +20,8 @@ import dev.langchain4j.store.embedding.inmemory.InMemoryEmbeddingStore;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
 
 @Configuration
@@ -52,7 +55,9 @@ public class ChatbotConfig {
                 .embeddingStore(embeddingStore)
                 .build();
 
-        Document doc = Document.document("Dijital cüzdan uygulamasında yapılan tüm transfer ve ödeme işlemlerinde komisyon oranı %0'dır. Müşterilerden hiçbir şekilde ek ücret talep edilmez.");
+        Path documentPath = Paths.get("src/main/resources/kurallar.txt");
+        Document doc = FileSystemDocumentLoader.loadDocument(documentPath);
+
         ingestor.ingest(doc);
 
         return EmbeddingStoreContentRetriever.builder()
