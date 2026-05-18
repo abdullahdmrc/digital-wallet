@@ -13,7 +13,6 @@ public class Wallet {
     public enum Currency {
         TRY, USD, EUR
     }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -31,6 +30,10 @@ public class Wallet {
     private boolean activeForShopping;
     private boolean activeForWithdraw;
 
+    @Column(unique = true)
+    private String iban;
+
+    private boolean isBlocked = false;
 
     private double balance;
     private double usableBalance;

@@ -74,7 +74,6 @@
 .tx-amount { font-weight: bold; font-size: 1.1rem; }
 .tx-amount.negative { color: #f44336; }
 
-/* Statü Badge Renkleri (Case Study Kuralları) */
 .status-badge {
   font-size: 0.7rem;
   padding: 2px 8px;

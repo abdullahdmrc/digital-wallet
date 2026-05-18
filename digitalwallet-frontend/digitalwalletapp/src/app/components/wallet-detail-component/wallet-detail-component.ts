@@ -67,24 +67,67 @@ export class WalletDetailComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // Backend'deki TransactionRequest ile birebir aynı objeyi oluşturuyoruz
-        const requestData = {
-          walletId: Number(this.id), // String'den Number'a çevirdik
-          amount: Number(result.amount), // Formdan gelen değeri sayıya çevirdik
-          type: result.type,
-          oppositePartyType: result.oppositePartyType,
-          oppositeParty: result.oppositeParty
-        };
-
-        console.log("Gönderilen Veri:", requestData);
-
-        // Karşılaştırma yaparken direkt objenin içindeki tipi kullan
-        if (requestData.type === 'WITHDRAW') {
-          this.withDraw(requestData);
+        if (result.type === 'TRANSFER') {
+          const requestData = {
+            senderWalletId: Number(this.id),
+            targetIban: result.oppositeParty,
+            amount: Number(result.amount)
+          };
+          this.walletService.transfer(requestData).subscribe({
+            next: () => this.refreshData(),
+            error: (err) => alert("Transfer başarısız: " + (err.error?.message || 'Bilinmeyen hata'))
+          });
         } else {
-          this.deposit(requestData);
+          const requestData = {
+            walletId: Number(this.id),
+            amount: Number(result.amount),
+            type: result.type,
+            oppositePartyType: result.oppositePartyType,
+            oppositeParty: result.oppositeParty,
+            spendingCategory: result.spendingCategory
+          };
+
+          if (requestData.type === 'WITHDRAW') {
+            this.withDraw(requestData);
+          } else {
+            this.deposit(requestData);
+          }
         }
       }
+    });
+  }
+
+  blockWallet() {
+    if (confirm('Cüzdanı bloke etmek istediğinize emin misiniz?')) {
+      this.walletService.blockWallet(this.id).subscribe({
+        next: () => this.refreshData(),
+        error: (err) => console.error(err)
+      });
+    }
+  }
+
+  unblockWallet() {
+    if (confirm('Cüzdan blokesini kaldırmak istediğinize emin misiniz?')) {
+      this.walletService.unblockWallet(this.id).subscribe({
+        next: () => this.refreshData(),
+        error: (err) => console.error(err)
+      });
+    }
+  }
+
+  downloadReceipt(txId: number) {
+    this.walletService.downloadReceipt(txId).subscribe({
+      next: (blob: Blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `dekont_${txId}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      },
+      error: (err) => alert('Dekont indirilemedi!')
     });
   }
 

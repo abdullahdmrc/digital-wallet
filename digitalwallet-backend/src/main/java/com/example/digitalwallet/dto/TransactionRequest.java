@@ -10,5 +10,6 @@ public class TransactionRequest {
     private Transaction.Type type;
     private Transaction.OppositePartyType oppositePartyType;
     private String oppositeParty;
+    private Transaction.SpendingCategory spendingCategory;
 
 }

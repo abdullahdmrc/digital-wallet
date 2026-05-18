@@ -1,0 +1,18 @@
+<div class="app-wrapper">
+    <!-- normalde tüm sayfalarda olan header elementlerini tek bir yerde tutmak için olusturulmus component budur ama suanda buna gerek yok-->
+    <!-- <app-header></app-header> -->
+
+    <div class="main-content">
+
+        <!-- normalde tüm sayfalarda olan sidebar elementlerini tek bir yerde tutmak için olusturulmus component budur ama suanda buna gerek yok-->
+        <!-- <app-sidebar></app-sidebar> -->
+        
+        <main class="page-content">
+            <router-outlet></router-outlet>
+        </main>
+    </div>
+
+    <!--router-outlet dışında olduğundan sayfa değişse de destroy edilmez  -->
+    <app-chatbot-widget></app-chatbot-widget>
+
+</div>

@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wallet-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wallet-backend
+  template:
+    metadata:
+      labels:
+        app: wallet-backend
+    spec:
+      containers:
+      - name: backend
+        image: digital-wallet-api
+        ports:
+        - containerPort: 8081
+        env:
+        - name: SPRING_DATASOURCE_URL
+          value: "jdbc:postgresql://db:5432/digitalwalletdb"
+        - name: SPRING_DATASOURCE_USERNAME
+          value: "postgres"
+        - name: SPRING_DATASOURCE_PASSWORD
+          value: "1234"
+        - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+          value: "update"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wallet-backend-svc
+spec:
+  type: ClusterIP
+  selector:
+    app: wallet-backend
+  ports:
+  - port: 8081
+    targetPort: 8081

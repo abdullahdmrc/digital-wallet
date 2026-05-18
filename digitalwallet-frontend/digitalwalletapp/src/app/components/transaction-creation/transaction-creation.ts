@@ -6,10 +6,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-transaction-creation',
-  imports: [MatDialogModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, ReactiveFormsModule],
+  imports: [CommonModule, MatDialogModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, ReactiveFormsModule],
   templateUrl: './transaction-creation.html',
   styleUrl: './transaction-creation.css',
 })
@@ -22,11 +23,26 @@ export class TransactionCreation {
   private dialogRef=inject(MatDialogRef<TransactionCreation>)
 
   transactionForm = this.fb.group({
-  amount: ['', [Validators.required, Validators.min(0.1)]],
-  type: ['', Validators.required], 
-  oppositePartyType: ['', Validators.required],
-  oppositeParty: ['', Validators.required]
-});
+    amount: ['', [Validators.required, Validators.min(0.1)]],
+    type: ['', Validators.required], 
+    oppositePartyType: [''],
+    oppositeParty: ['', Validators.required],
+    spendingCategory: ['']
+  });
+
+  ngOnInit() {
+    this.transactionForm.get('type')?.valueChanges.subscribe(type => {
+      if (type === 'TRANSFER') {
+        this.transactionForm.get('oppositePartyType')?.clearValidators();
+        this.transactionForm.get('spendingCategory')?.clearValidators();
+      } else {
+        this.transactionForm.get('oppositePartyType')?.setValidators([Validators.required]);
+        this.transactionForm.get('spendingCategory')?.setValidators([Validators.required]);
+      }
+      this.transactionForm.get('oppositePartyType')?.updateValueAndValidity();
+      this.transactionForm.get('spendingCategory')?.updateValueAndValidity();
+    });
+  }
 
   onSave() {
     if (this.transactionForm.valid) {

@@ -2,8 +2,6 @@ import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 
-
-
 @Injectable({
   providedIn: 'root'
 })
@@ -51,9 +49,24 @@ export class WalletService {
   return this.http.post(`${this.approveUrl}/${id}`, {}); 
 }
 
-denyTransaction(id: any) {
-  return this.http.post(`${this.denyUrl}/${id}`, {});
-}
+  denyTransaction(id: any) {
+    return this.http.post(`${this.denyUrl}/${id}`, {});
+  }
 
+  transfer(data: any): Observable<any> {
+    return this.http.post(`${this.transactionUrl}/transfer`, data);
+  }
+
+  blockWallet(id: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/${id}/block`, {});
+  }
+
+  unblockWallet(id: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/${id}/unblock`, {});
+  }
+
+  downloadReceipt(id: any) {
+    return this.http.get(`${this.transactionUrl}/${id}/receipt`, { responseType: 'blob' });
+  }
 
 }

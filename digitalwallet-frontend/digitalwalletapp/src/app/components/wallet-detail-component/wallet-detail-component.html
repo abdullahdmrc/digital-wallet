@@ -1,11 +1,14 @@
 <div class="detail-container" *ngIf="wallet$ | async as wallet; else loading">
   <aside class="left-panel">
     <div class="wallet-card-container">
-      <div class="wallet-card">
+      <div class="wallet-card" [class.blocked]="wallet.blocked">
         <div class="card-chip"></div>
         <div class="wallet-info">
-          <span class="wallet-name">{{ wallet.walletName }}</span>
+          <span class="wallet-name">{{ wallet.walletName }} <span *ngIf="wallet.blocked" class="blocked-badge">(Bloke)</span></span>
           <span class="currency-badge">{{ wallet.currency }}</span>
+        </div>
+        <div class="iban-section">
+          <span class="iban-text">{{ wallet.iban }}</span>
         </div>
         <div class="balance-section">
           <p class="label">Toplam Bakiye</p>
@@ -21,8 +24,15 @@
     </div>
 
     <div class="action-buttons">
-      <button mat-raised-button color="primary" (click)="openCreateDialog()">
+      <button mat-raised-button color="primary" (click)="openCreateDialog()" [disabled]="wallet.blocked">
         <mat-icon>add</mat-icon> Parasal işlemler
+      </button>
+      
+      <button *ngIf="!wallet.blocked" mat-raised-button color="warn" (click)="blockWallet()">
+        <mat-icon>lock</mat-icon> Cüzdanı Bloke Et
+      </button>
+      <button *ngIf="wallet.blocked" mat-raised-button color="accent" (click)="unblockWallet()">
+        <mat-icon>lock_open</mat-icon> Bloke Kaldır
       </button>
     </div>
   </aside>
@@ -53,9 +63,14 @@
             <span class="tx-amount" [class.negative]="tx.type === 'WITHDRAW'">
               {{ tx.type === 'WITHDRAW' ? '-' : '+' }}{{ tx.amount | number:'1.2-2' }}
             </span>
-            <span class="status-badge" [ngClass]="tx.status.toLowerCase()">
-              {{ tx.status }}
-            </span>
+            <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
+              <span class="status-badge" [ngClass]="tx.status.toLowerCase()">
+                {{ tx.status }}
+              </span>
+              <button *ngIf="tx.oppositePartyType === 'IBAN'" mat-button color="primary" style="font-size: 12px; height: 24px; line-height: 24px;" (click)="downloadReceipt(tx.id)">
+                Dekont İndir
+              </button>
+            </div>
           </div>
         </div>
       </ng-container>

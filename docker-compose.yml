@@ -1,0 +1,43 @@
+
+services:
+  # 1. Veritabanı Servisi (PostgreSQL)
+  db:
+    image: postgres:15
+    container_name: digital-wallet-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: digitalwalletdb
+    ports:
+      - "5433:5432"
+    volumes:
+      # Burada verilerin kalıcı olmasını sağlıyoruz 
+      # Konteyner silinse de veriler gitmiyor
+      - postgres_data:/var/lib/postgresql/data
+
+  # 2. Backend Servisi (Spring Boot)
+  backend:
+    build: ./digitalwallet-backend
+    container_name: digital-wallet-api
+    ports:
+      - "8081:8081"
+    depends_on:
+      - db
+    environment:
+      #Localhost yerine "db" servis adını yazıyoruz.
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/digitalwalletdb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 1234
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+
+  # 3. Frontend Servisi (Angular)
+  frontend:
+    build: ./digitalwallet-frontend/digitalwalletapp
+    container_name: digital-wallet-ui
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data: # İsimlendirilmiş volume tanımı

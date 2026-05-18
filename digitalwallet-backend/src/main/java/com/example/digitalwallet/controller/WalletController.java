@@ -2,10 +2,9 @@ package com.example.digitalwallet.controller;
 
 import com.example.digitalwallet.dto.WalletRequest;
 import com.example.digitalwallet.model.Wallet;
-import com.example.digitalwallet.service.WalletService;
+import com.example.digitalwallet.service.impl.WalletService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,4 +31,13 @@ public class WalletController {
         return ResponseEntity.ok(walletService.getWalletById(id));
     }
 
+    @PutMapping("api/wallets/{id}/block")
+    public ResponseEntity<Wallet> blockWallet(@PathVariable int id) {
+        return ResponseEntity.ok(walletService.blockWallet(id));
+    }
+
+    @PutMapping("api/wallets/{id}/unblock")
+    public ResponseEntity<Wallet> unblockWallet(@PathVariable int id) {
+        return ResponseEntity.ok(walletService.unblockWallet(id));
+    }
 }

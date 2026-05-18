@@ -1,4 +1,4 @@
-package com.example.digitalwallet.service;
+package com.example.digitalwallet.service.impl;
 
 import com.example.digitalwallet.dto.WalletRequest;
 import com.example.digitalwallet.model.Customer;
@@ -14,7 +14,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,14 +26,12 @@ public class WalletService {
         Wallet newWallet=new Wallet();
         newWallet.setWalletName(walletRequest.getWalletName());
         newWallet.setCurrency(Wallet.Currency.valueOf(walletRequest.getCurrency()));
-
-
         newWallet.setCustomer(isUserLogedIn());
         newWallet.setActiveForShopping(true);// default
         newWallet.setActiveForWithdraw(true); // default
         newWallet.setBalance(0.0);//default
         newWallet.setUsableBalance(0.0);//default
-
+        newWallet.setIban(generateIban());
         walletRepository.save(newWallet);
         return newWallet;
 
@@ -64,5 +61,29 @@ public class WalletService {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
         Customer customer = customerRepository.findByUser(user).orElseThrow(() -> new UsernameNotFoundException("Customer not found"));
         return customer;
+    }
+
+    private String generateIban() {
+        StringBuilder iban = new StringBuilder("TR");
+        for (int i = 0; i < 24; i++) {
+            iban.append((int) (Math.random() * 10));
+        }
+        return iban.toString();
+    }
+
+    public Wallet blockWallet(int id) {
+        Wallet wallet = getWalletById(id);
+        wallet.setBlocked(true);
+        wallet.setActiveForShopping(false);
+        wallet.setActiveForWithdraw(false);
+        return walletRepository.save(wallet);
+    }
+
+    public Wallet unblockWallet(int id) {
+        Wallet wallet = getWalletById(id);
+        wallet.setBlocked(false);
+        wallet.setActiveForShopping(true);
+        wallet.setActiveForWithdraw(true);
+        return walletRepository.save(wallet);
     }
 }
