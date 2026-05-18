@@ -1,6 +1,6 @@
 <div align="center">
 
-  <img src="banner.png" alt="Digital Wallet Banner" width="100%" />
+  
 
   <h1>💳 Digital Wallet</h1>
 
