@@ -31,4 +31,13 @@ public class WalletController {
         return ResponseEntity.ok(walletService.getWalletById(id));
     }
 
+    @PutMapping("api/wallets/{id}/block")
+    public ResponseEntity<Wallet> blockWallet(@PathVariable int id) {
+        return ResponseEntity.ok(walletService.blockWallet(id));
+    }
+
+    @PutMapping("api/wallets/{id}/unblock")
+    public ResponseEntity<Wallet> unblockWallet(@PathVariable int id) {
+        return ResponseEntity.ok(walletService.unblockWallet(id));
+    }
 }

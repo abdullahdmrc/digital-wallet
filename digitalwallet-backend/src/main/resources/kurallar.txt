@@ -1,0 +1,29 @@
+# Dijital Cüzdan Genel Kuralları ve İşlem Şartları
+
+## 1. Para Birimleri ve Hesaplar
+- Dijital cüzdan sisteminde yalnızca şu para birimleri kabul edilmektedir: TRY (Türk Lirası), USD (Amerikan Doları) ve EUR (Euro)[cite: 76].
+- Kullanıcılar aynı anda birden fazla para biriminde cüzdan oluşturabilirler.
+- Cüzdanlar arası döviz çevrim işlemlerinde anlık kur uygulanır ve %1 kur çevrim ücreti kesilir.
+
+## 2. İşlem Limitleri ve Onay Süreçleri
+- Müşteriler günün her saati para yatırma (deposit) ve para çekme (withdraw) işlemi yapabilirler.
+- 1000 birim (TRY, USD veya EUR) ve altındaki işlemler otomatik olarak onaylanır ve anında gerçekleşir.
+- 1000 birim üzerindeki tüm işlemler güvenlik sebebiyle sistem tarafından otomatik olarak "PENDING" (Beklemede) statüsüne alınır.
+- PENDING statüsündeki işlemlerin gerçekleşmesi için yetkili bir çalışanın (Employee) manuel onayı gereklidir.
+- Yetkili tarafından "APPROVED" (Onaylandı) statüsüne alınan işlemler kullanıcının cüzdan bakiyesine yansır[cite: 78].
+- Yetkili tarafından "DENIED" (Reddedildi) statüsüne alınan işlemler iptal edilir ve bakiyeye herhangi bir yansıması olmaz[cite: 79].
+
+## 3. Komisyon ve Ücretlendirme Tablosu
+- Dijital cüzdana kredi kartı veya banka havalesi ile para yatırma işlemleri tamamen ücretsizdir (%0 komisyon).
+- Cüzdandan banka hesabına para çekme (withdraw) işlemlerinde sabit 5 TRY işlem ücreti alınır.
+- Sistem içindeki diğer kullanıcılara (P2P) yapılan para transferlerinden hiçbir koşulda komisyon alınmaz (%0 komisyon).
+- Sanal kart oluşturma işlemleri ücretsizdir. Ancak bir ay içinde 3'ten fazla sanal kart oluşturulursa, 4. karttan itibaren her kart için 10 TRY ücret kesilir.
+
+## 4. Güvenlik ve Kart Yönetimi
+- Şüpheli bir işlem tespit edildiğinde kullanıcı cüzdanı sistem tarafından otomatik olarak bloke edilebilir.
+- Kullanıcılar istedikleri zaman uygulama üzerinden kartlarını dondurabilir veya tamamen iptal edebilirler.
+- Şifresini veya giriş bilgilerini arka arkaya 3 kez hatalı giren kullanıcıların hesapları 15 dakika süreyle kilitlenir.
+
+## 5. İptal ve İade İşlemleri
+- Başarılı bir şekilde gerçekleşmiş (Approved) kullanıcılar arası transferlerin iptali veya iadesi sistem üzerinden yapılamaz. İade için tarafların kendi aralarında anlaşması gerekir.
+- Kurumsal ödemelerde (fatura, alışveriş) oluşan hatalarda iade süreci ilgili kurumun onayına bağlı olarak 3 ila 5 iş günü sürebilir.

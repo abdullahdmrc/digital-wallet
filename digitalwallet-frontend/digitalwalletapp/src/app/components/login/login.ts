@@ -35,7 +35,7 @@ export class Login {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
-  private snackBar=inject(MatSnackBar);
+  private snackBar = inject(MatSnackBar);
 
   // Reactive form oluşturuyoruz
   loginForm = this.fb.group({
@@ -50,22 +50,22 @@ export class Login {
     this.authService.login(this.loginForm.value).subscribe({
       next: () => {
         this.snackBar.open('Giriş başarılı ✔', 'Kapat', {
-        duration: 3000,
-      panelClass: ['success-snackbar']
-    });
-        
-      const role = this.authService.getUserRole();
-      if (role === 'ROLE_EMPLOYEE') {
-        this.router.navigate(['/admin-panel']);
-      } else if (role === 'ROLE_CUSTOMER') {
-        this.router.navigate(['/customer-home']);
-      }
+          duration: 3000,
+          panelClass: ['success-snackbar'],
+
+        });
+        const role = this.authService.getUserRole();
+        if (role === 'ROLE_EMPLOYEE') {
+          this.router.navigate(['/admin-panel']);
+        } else if (role === 'ROLE_CUSTOMER') {
+          this.router.navigate(['/customer-home']);
+        }
       },
       error: err => {
         this.snackBar.open('Giriş başarısız ❌', 'Kapat', {
-      duration: 3000,
-      panelClass: ['error-snackbar']
-      });
+          duration: 3000,
+          panelClass: ['error-snackbar']
+        });
         console.log(err);
       }
     });
